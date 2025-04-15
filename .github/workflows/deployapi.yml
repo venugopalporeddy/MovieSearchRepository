@@ -1,0 +1,35 @@
+name: Build and Deploy ASP.NET Web API to Azure
+
+on:
+  push:
+    branches:
+      - main  # or master
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.x' # or 7.0.x based on your project
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build the app
+        run: dotnet build --configuration Release
+
+      - name: Publish the app
+        run: dotnet publish -c Release -o ./publish
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_PUBLISH_USERNAME }}:${{ secrets.AZURE_PUBLISH_PASSWORD }}
+          package: ./publish
