@@ -50,7 +50,7 @@ namespace MoviesSearch.Api.Controllers
         [Route("CheckDeployments")]
         public async Task<IActionResult> CheckDeployments() 
         {
-            return Ok("you did it successfully ci / cd");
+            return Ok("you did it successfully ci / cd check");
         }
     }
 }
